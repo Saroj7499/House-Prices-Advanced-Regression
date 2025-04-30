@@ -46,9 +46,27 @@ These features will be imputed or dropped depending on the significance.
 
 ## Step 3: Data Cleaning & Preprocessing
 
-Next, we handle missing data. We will:
+After inspecting the dataset, we took the following actions:
 
-Fill missing values in categorical columns with 'None'
+**Dropped Columns with Too Many Missing Values**
 
-Drop columns with too many missing values (e.g., PoolQC, MiscFeature)
+We removed the following columns because they had over 1000 missing values, which means more than 70% of the data was missing:
+
+code:
+train_data['FireplaceQu'] = train_data['FireplaceQu'].fillna('None')
+
+This ensures that the model doesn't interpret missing values as unknown but rather as a valid category.
+
+**Numerical Missing Values: Replaced with Median**
+The column LotFrontage (linear feet of street connected to property) had 259 missing values. We filled it using the median value:
+
+code:
+train_data['LotFrontage'] = train_data['LotFrontage'].fillna(train_data['LotFrontage'].median())
+
+We chose the median to avoid skewing due to outliers.
+
+**Final Check**
+We verified that all missing values were successfully handled:
+code:
+train_data.isnull().sum().sum()  # Output: 0
 
