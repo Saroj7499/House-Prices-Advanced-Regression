@@ -70,3 +70,38 @@ We verified that all missing values were successfully handled:
 code:
 train_data.isnull().sum().sum()  # Output: 0
 
+**Step 4: Handling Missing Values**
+
+Dropping Columns with Too Many Missing Values
+We observed that the columns PoolQC, MiscFeature, Alley, and Fence had a large number of missing values. These features likely represent rare or less informative characteristics, so we decided to drop them:
+
+code:
+cols_to_drop = ['PoolQC', 'MiscFeature', 'Alley', 'Fence']
+train_data.drop(columns=cols_to_drop, inplace=True)
+drop(columns=...): removes specified columns.
+
+inplace=True: makes the changes directly to train_data without needing reassignment.
+
+ **Filling Missing Categorical Values**
+We filled missing values in the FireplaceQu column with 'None', assuming that missing means no fireplace:
+
+code:
+train_data['FireplaceQu'] = train_data['FireplaceQu'].fillna('None')
+Similarly, for the LotFrontage column (numerical), we filled missing values using the median of the column:
+
+code:
+train_data['LotFrontage'] = train_data['LotFrontage'].fillna(train_data['LotFrontage'].median())
+We chose median to avoid being affected by outliers.
+
+This ensures the distribution remains balanced.
+
+ ## Result
+After cleaning, we verified that there were no more missing values:
+
+code:
+train_data.isnull().sum().sum()
+# Output: 0
+This confirms that our dataset is now ready for further analysis and modeling.
+
+
+
